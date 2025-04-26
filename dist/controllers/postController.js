@@ -1,7 +1,7 @@
-import { Post, User } from '../models/index.js';
+import { Thought, User } from '../models/index.js';
 export const getPosts = async (_req, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Thought.find();
         res.json(posts);
     }
     catch (err) {
@@ -10,7 +10,7 @@ export const getPosts = async (_req, res) => {
 };
 export const getSinglePost = async (req, res) => {
     try {
-        const post = await Post.findOne({ _id: req.params.postId });
+        const post = await Thought.findOne({ _id: req.params.postId });
         if (!post) {
             res.status(404).json({ message: 'No post with that ID' });
         }
@@ -25,7 +25,7 @@ export const getSinglePost = async (req, res) => {
 // create a new post
 export const createPost = async (req, res) => {
     try {
-        const post = await Post.create(req.body);
+        const post = await Thought.create(req.body);
         const user = await User.findOneAndUpdate({ _id: req.body.userId }, { $addToSet: { posts: post._id } }, { new: true });
         if (!user) {
             res

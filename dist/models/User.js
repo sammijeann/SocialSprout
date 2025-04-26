@@ -1,13 +1,28 @@
 import { Schema, model } from 'mongoose';
 // Schema to create User model
 const userSchema = new Schema({
-    first: String,
-    last: String,
-    age: Number,
-    posts: [
+    username: {
+        type: String,
+        required: [true, 'Username is required'],
+        unique: true,
+        trim: true // Enable trimming of whitespace
+    },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        unique: true,
+        match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'],
+    },
+    thoughts: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'post',
+            ref: 'thought',
+        },
+    ],
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
         },
     ],
 }, {
@@ -18,18 +33,11 @@ const userSchema = new Schema({
     },
     id: false,
 });
-// Create a virtual property `fullName` that gets and sets the user's full name
 userSchema
-    .virtual('fullName')
+    .virtual('friendcount')
     // Getter
     .get(function () {
-    return `${this.first} ${this.last}`;
-})
-    // Setter to set the first and last name
-    .set(function (v) {
-    const first = v.split(' ')[0];
-    const last = v.split(' ')[1];
-    this.set({ first, last });
+    return `${this.friends.length}`;
 });
 // Initialize our User model
 const User = model('user', userSchema);

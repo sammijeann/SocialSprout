@@ -917,5 +917,5 @@ const names = [
     ``,
 ];
 const getNamePart = () => names[Math.floor(Math.random() * names.length)];
-const getRandomName = () => `${getNamePart()} ${getNamePart()}`;
+const getRandomName = () => `${getNamePart()}`;
 export default getRandomName;

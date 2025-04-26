@@ -1,9 +1,12 @@
 import { Router } from 'express';
 const router = Router();
-import { getSinglePost, getPosts, createPost } from '../../controllers/postController.js';
+import { getSingleThought, getThoughts, createThought } from '../../controllers/postController.js';
 
-router.route('/').get(getPosts).post(createPost);
+router.route('/').get(getThoughts).post(createThought);
 
-router.route('/:postId').get(getSinglePost);
+router.route('/:thoughtId').get(getSingleThought).put().delete();
+
+router.route('/:thoughtId/reactions').post(getSingleThought).delete();
+
 
 export default router;
