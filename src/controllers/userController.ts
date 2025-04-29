@@ -14,7 +14,7 @@ import { Request, Response } from 'express';
     try {
       const user = await User.findOne({ _id: req.params.userId })
         .select('-__v')
-        .populate('posts');
+        .populate('thoughts');
 
       if (!user) {
         res.status(404).json({ message: 'No user with that ID' });
@@ -67,7 +67,7 @@ import { Request, Response } from 'express';
         return res.status(404).json({ message: 'No user with that ID' });
       }
   
-      return res.json(deletedUser);
+      return res.json({ message: 'user deleted!' });
     } catch (err) {
       return res.status(500).json(err);
     }

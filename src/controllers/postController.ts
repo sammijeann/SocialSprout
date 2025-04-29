@@ -48,3 +48,91 @@ import { Request, Response } from 'express';
     }
   }
 
+// delete post
+export const deleteThought = async (req: Request, res: Response) => {
+  try {
+    const { thoughtId } = req.params; // Extract thoughtId from req.params
+
+    const thought = await Thought.findByIdAndDelete(thoughtId); // Pass thoughtId directly
+    // const user = await User.findOneAndUpdate(
+    //   { _id: req.body.userId },
+    //   { $pull: { thoughts: thought._id } },
+    //   { new: true }
+    // );
+
+    if (!thought) {
+       res
+        .status(404)
+        .json({ message: 'thought not found' });
+    } else {  
+      res.json('deleted the post 🎉');
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+}
+
+export const addReaction = async (req: Request, res: Response) => {
+  try {
+    const { thoughtId } = req.params;
+
+    // Add the reaction to the thought's reactions array
+    const updatedThought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      { $addToSet: { reactions: req.body } }, // Add the reaction to the array
+      { new: true, runValidators: true } // Return the updated document and run validators
+    );
+
+    if (!updatedThought) {
+      return res.status(404).json({ message: 'No thought with that ID' });
+    }
+
+    return res.json(updatedThought);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+export const deleteReaction = async (req: Request, res: Response) => {
+  try {
+    const { thoughtId } = req.params;
+
+    // Add the reaction to the thought's reactions array
+    const updatedThought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      { $pull: { reactions: req.body } }, // Add the reaction to the array
+      { new: true, runValidators: true } // Return the updated document and run validators
+    );
+
+    if (!updatedThought) {
+      return res.status(404).json({ message: 'No thought with that ID' });
+    }
+
+    return res.json(updatedThought);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+
+ // update thought
+  export const updateThought = async (req: Request, res: Response) => {
+    try {
+      const updatedThought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId, // The ID of the user to update
+        { $set: req.body }, // Update the user's information with the request body
+        { new: true, runValidators: true } // Return the updated document and run validators
+      );
+  
+      if (!updatedThought) {
+        return res.status(404).json({ message: 'No thought with that ID' });
+      }
+  
+      return res.json(updatedThought);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }

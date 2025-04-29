@@ -1,10 +1,13 @@
-import { Schema, model, Document, ObjectId } from 'mongoose';
+import { Schema, model, Document, InferSchemaType } from 'mongoose';
+import reactionSchema from './Reaction.js';
+
+type Reaction = InferSchemaType<typeof reactionSchema>; // Infer the type of a reaction from the schema
 
 interface IThought extends Document {
  thoughtText: string;
  createdAt: Schema.Types.Date;
  username: string;
- reactions: ObjectId[];
+ reactions: Reaction[];
 }
 
 // Schema to create Post model
@@ -28,12 +31,8 @@ const thoughtSchema = new Schema<IThought>(
       type: String,
       required: [true, 'username is required'],
     },
-    reactions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'reaction',
-      },
-    ],
+    //reactions: [reactionSchema],
+    reactions: [reactionSchema],
   },
   {
     
@@ -48,7 +47,7 @@ const thoughtSchema = new Schema<IThought>(
 thoughtSchema
   .virtual('reactionsCount')
   // Getter
-  .get(function (this: any) {
+  .get(function (this: IThought) {
     return this.reactions.length;
   });
 

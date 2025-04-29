@@ -1,12 +1,10 @@
 // Assistance from Xpert AI with formatting schema
 
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+import { Schema } from 'mongoose';;
 
 const reactionSchema = new Schema({
   reactionId: {
     type: Schema.Types.ObjectId,
-    default: () => new mongoose.Types.ObjectId() 
   },
   reactionBody: {
     type: String,
@@ -31,5 +29,4 @@ const reactionSchema = new Schema({
   id: false 
 });
 
-// Export the Reaction model
-module.exports = mongoose.model('Reaction', reactionSchema);
+export default reactionSchema;

@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import reactionSchema from './Reaction.js';
 // Schema to create Post model
 const thoughtSchema = new Schema({
     thoughtText: {
@@ -19,12 +20,8 @@ const thoughtSchema = new Schema({
         type: String,
         required: [true, 'username is required'],
     },
-    reactions: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'reaction',
-        },
-    ],
+    //reactions: [reactionSchema],
+    reactions: [reactionSchema],
 }, {
     toJSON: {
         virtuals: true,
@@ -39,5 +36,5 @@ thoughtSchema
     return this.reactions.length;
 });
 // Initialize our Post model
-const Thought = model('tbought', thoughtSchema);
+const Thought = model('thought', thoughtSchema);
 export default Thought;

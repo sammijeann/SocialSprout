@@ -7,9 +7,9 @@ connection.on('error', (err) => err);
 
 connection.once('open', async () => {
   // Delete the collections if they exist
-  let postCheck = await connection.db?.listCollections({ name: 'posts' }).toArray();
+  let postCheck = await connection.db?.listCollections({ name: 'thoughts' }).toArray();
   if (postCheck?.length) {
-    await connection.dropCollection('posts');
+    await connection.dropCollection('thoughts');
   }
 
   let userCheck = await connection.db?.listCollections({ name: 'users' }).toArray();
